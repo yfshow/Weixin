@@ -1,0 +1,297 @@
+/*----订单查询js-------*/
+$(function(){
+	//滚动区的最小高度，避免一个订单时情况
+	var ht = $(window).height() - $("#thelist").offset().top
+	$("#thelist").css("min-height",ht+1 + "px");
+	//阻止按钮冒泡
+	$(".passed a").click(function(e){
+		e.stopPropagation();
+	})
+	
+	//判断每个订单里的li个数是否1
+	$('.full-ul-search').each(function(){
+		var linum =$(this).find('li');
+		if(linum.length == 1){
+			$(this).css("height","auto");
+			$(this).next().css("display","none");
+		}
+		if(linum.length > 1){
+			$(this).css("height","19.3rem");
+			$(this).next().css("display","block");
+		}
+	})
+	
+	//--展开收起
+	$(".open").click(function(e){
+		var sptxt = $(this).children();
+		if(sptxt.text() == "展开"){
+			sptxt.text("收起");
+			$(this).addClass("shou");
+			$(this).prev().css("height","auto");
+		}else{
+			sptxt.text("展开");
+			$(this).removeClass("shou");
+			$(this).prev().css("height","19rem");
+		}
+		myScroll.refresh();
+		e.stopPropagation();
+	})
+	//菜单导航点击
+	$("#sts li").click(function(){
+		$(this).addClass('current').siblings('li').removeClass('current');
+	});
+	
+	//--更多
+	$(".ord_st_rg").on("click", function(e){
+		if($(".more-navs").is(":hidden")){
+	    	$(".more-navs").show();
+	    }else{
+	    	$(".more-navs").hide();
+	    }
+	
+	    $(document).one("click", function(){
+	        $(".more-navs").hide();
+	    });
+	
+	    e.stopPropagation();
+	});
+	$(".more-navs").on("click", function(e){
+	    e.stopPropagation();
+	});
+	//	--点击li的值切换
+	$(".more-navs-ul li").click(function(){
+		var litxt = $(this).text();
+		$(this).text($(".changetxt").find("a").text());
+		$(".changetxt").addClass("current").find("a").text(litxt);
+		$("#sts li").not(".changetxt").removeClass("current");
+		$(this).parents(".more-navs").hide();
+	});
+})
+
+//-------------------上拉加载,下拉刷新------------
+var myScroll,
+	pullDownEl, pullDownOffset,
+	pullUpEl, pullUpOffset,
+	generatedCount = 0;
+function pullDownAction () {
+	//setTimeout(function () {	
+		console.log('pullDownAction');
+		var el, li, i;
+		el = document.getElementById('thelist');
+
+		for (i=0; i<2; i++) {
+			li = document.createElement('div');
+			li.innerHTML = '<div class="all_order clearfix">'+
+									'<div class="all_ord_rg"><span>待支付</span></div>'+
+									'<span class="garage_name">大兴修理厂</span>'+
+								'</div>'+
+								'<div class="per_good">'+
+								    '<ul class="full-ul full-ul-search">'+
+								        '<li class="goods-list clearfix">'+
+								            '<div class="goods-img"><img src="../images/temp/img1.jpg" alt=""></div>'+
+								            '<div class="goods-title"><p>宝马发动机宝马发动机宝马发动机宝马发动机宝马发动机</p><span>北京通州区万达广场</span></div>'+
+								            '<div class="goods-price"><p>￥200.00</p><p class="clr6">X1</p></div>'+
+								        '</li>'+
+								        '<li class="goods-list clearfix">'+
+								            '<div class="goods-img"><img src="../images/temp/img1.jpg" alt=""></div>'+
+								            '<div class="goods-title"><p>宝马发动机宝马发动机宝马发动机宝马发动机宝马发动机</p><span>北京通州区万达广场</span></div>'+
+								            '<div class="goods-price"><p>￥200.00</p><p class="clr6">X1</p></div>'+
+								        '</li>'+
+								        '<li class="goods-list clearfix">'+
+								            '<div class="goods-img"><img src="../images/temp/img1.jpg" alt=""></div>'+
+								            '<div class="goods-title"><p>宝马发动机宝马发动机宝马发动机宝马发动机宝马发动机</p><span>北京通州区万达广场</span></div>'+
+								            '<div class="goods-price"><p>￥200.00</p><p class="clr6">X1</p></div>'+
+								        '</li>'+
+								    '</ul>'+
+								    '<p class="open"><span>展开</span></p>'+
+								    '<div class="passed">'+
+								    		'<p>共3件商品 合计：<span class="red"><em>￥</em>400.00</span></p>'+
+								    		'<p class="go-x"><a href="javascript:;" class="comBtn no-pass">取消调货订单</a><a href="javascript:;" class="comBtn pass">确认支付</a></p>'+
+								    '</div>'+
+								'</div>';
+			el.appendChild(li, el.childNodes[0]);
+			li.setAttribute("class", "per-ord");
+		}
+		$(".open").unbind().click(function(e){
+			var sptxt = $(this).children();
+			if(sptxt.text() == "展开"){
+				sptxt.text("收起");
+				$(this).addClass("shou");
+				$(this).prev().css("height","auto");
+			}else{
+				sptxt.text("展开");
+				$(this).removeClass("shou");
+				$(this).prev().css("height","19rem");
+			}
+			myScroll.refresh();
+			e.stopPropagation();
+		})
+		
+		myScroll.refresh();	
+	//}, 30);
+}
+function pullUpAction () {
+		var el, li, i;
+		el = document.getElementById('thelist');
+	//setTimeout(function () {	
+		for (i=0; i<2; i++) {
+			li = document.createElement('div');
+			li.innerHTML = '<div class="all_order clearfix">'+
+									'<div class="all_ord_rg"><span>待支付</span></div>'+
+									'<span class="garage_name">大兴修理厂</span>'+
+								'</div>'+
+								'<div class="per_good">'+
+								    '<ul class="full-ul full-ul-search">'+
+								        '<li class="goods-list clearfix">'+
+								            '<div class="goods-img"><img src="../images/temp/img1.jpg" alt=""></div>'+
+								            '<div class="goods-title"><p>宝马发动机宝马发动机宝马发动机宝马发动机宝马发动机</p><span>北京通州区万达广场</span></div>'+
+								            '<div class="goods-price"><p>￥200.00</p><p class="clr6">X1</p></div>'+
+								        '</li>'+
+								        '<li class="goods-list clearfix">'+
+								            '<div class="goods-img"><img src="../images/temp/img1.jpg" alt=""></div>'+
+								            '<div class="goods-title"><p>宝马发动机宝马发动机宝马发动机宝马发动机宝马发动机</p><span>北京通州区万达广场</span></div>'+
+								            '<div class="goods-price"><p>￥200.00</p><p class="clr6">X1</p></div>'+
+								        '</li>'+
+								        '<li class="goods-list clearfix">'+
+								            '<div class="goods-img"><img src="../images/temp/img1.jpg" alt=""></div>'+
+								            '<div class="goods-title"><p>宝马发动机宝马发动机宝马发动机宝马发动机宝马发动机</p><span>北京通州区万达广场</span></div>'+
+								            '<div class="goods-price"><p>￥200.00</p><p class="clr6">X1</p></div>'+
+								        '</li>'+
+								    '</ul>'+
+								    '<p class="open"><span>展开</span></p>'+
+								    '<div class="passed">'+
+								    		'<p>共3件商品 合计：<span class="red"><em>￥</em>400.00</span></p>'+
+								    		'<p class="go-x"><a href="javascript:;" class="comBtn no-pass">取消调货订单</a><a href="javascript:;" class="comBtn pass">确认支付</a></p>'+
+								    '</div>'+
+								'</div>';
+			el.appendChild(li, el.childNodes[0]);
+			li.setAttribute("class", "per-ord");
+		}
+		$(".open").unbind().click(function(e){
+			var sptxt = $(this).children();
+			if(sptxt.text() == "展开"){
+				sptxt.text("收起");
+				$(this).addClass("shou");
+				$(this).prev().css("height","auto");
+			}else{
+				sptxt.text("展开");
+				$(this).removeClass("shou");
+				$(this).prev().css("height","19rem");
+			}
+			myScroll.refresh();
+			e.stopPropagation();
+		})
+		
+		myScroll.refresh();
+	//}, 30);
+}
+function loaded() {
+	// pullDownEl = document.getElementById('pullDown');
+	// pullDownOffset = pullDownEl.offsetHeight;
+	// pullUpEl = document.getElementById('pullUp');	
+	// pullUpOffset = pullUpEl.offsetHeight;
+	
+	// myScroll = new iScroll('wrapper', {
+	// 	//useTransition: true,
+	// 	topOffset: pullDownOffset,
+	// 	onRefresh: function () {
+	// 		if (pullDownEl.className.match('loading')) {
+	// 			pullDownEl.className = '';
+	// 			pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+	// 		} else if (pullUpEl.className.match('loading')) {
+	// 			pullUpEl.className = '';
+	// 			pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+	// 		}
+	// 	},
+	// 	onScrollMove: function () {
+	// 		if (this.y > 5 && !pullDownEl.className.match('flip')) {
+	// 			pullDownEl.className = 'flip';
+	// 			pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+	// 			this.minScrollY = 0;
+	// 		} else if (this.y < 5 && pullDownEl.className.match('flip')) {
+	// 			pullDownEl.className = '';
+	// 			pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+	// 			this.minScrollY = -pullDownOffset;
+	// 		} else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+	// 			pullUpEl.className = 'flip';
+	// 			pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+	// 			this.maxScrollY = this.maxScrollY;
+	// 		} else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+	// 			pullUpEl.className = '';
+	// 			pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+	// 			this.maxScrollY = pullUpOffset;
+	// 		}
+	// 	},
+	// 	onScrollEnd: function () {
+	// 		if (pullDownEl.className.match('flip')) {
+	// 			pullDownEl.className = 'loading';
+	// 			pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载...';				
+	// 			pullDownAction();	
+	// 		} else if (pullUpEl.className.match('flip')) {
+	// 			pullUpEl.className = 'loading';
+	// 			pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载...';				
+	// 			pullUpAction();	
+	// 		}
+	// 	}
+	// });
+	// document.getElementById('wrapper').style.left = '0'; 
+//	document.getElementById('wrapper').style.top = '75px';
+	//setTimeout(function () { document.getElementById('wrapper').style.left = '0'; });
+	// var upIcon = $("#up-icon"),
+    //     downIcon = $("#down-icon");
+    console.log(1);
+    var ord_statusHeight = $('.ord_status').height();
+    var windowHeight = $(window).height();
+    $('.wrapper').css('height',(windowHeight-ord_statusHeight)+'px');
+    myScroll = new IScroll('.wrapper', { click:true,probeType: 3,mouseWheel: true });
+    myScroll.on("scroll",function(){
+        var y = this.y,maxY = this.maxScrollY - y;
+        if(y >= 50){
+            $('#pullDown-msg').html('松开开始刷新');
+        }
+        else if(y < 50 && y > 1){
+            $('#pullDown-msg').html('下拉刷新');
+        }
+        if(maxY >= 50){
+            $('#pullUp-msg').html('松开开始加载');
+        }else if(maxY < 50 && maxY >=1){
+            $('#pullUp-msg').html('上拉加载');
+        }
+    });
+    myScroll.on("slideDown",function(){
+        if(this.y > 50){
+            $('#scroller-pullDown').addClass('on');
+            $('#pullDown-msg').html('正在更新');
+            // for(var i=0;i<2;i++){
+            //     $('.record-box').prepend('<div class="re-list"><div class="re-li-title">2016-06-20</div><div class="re-li-intro"><p class="shop-type"><span class="shop-name corwn-gold">高级店铺（1个月）</span><span class="red flr">￥50.00</span></p><p class="pay-time"><span class="small">起止时间：2016/06/20-2016/07/20</span><a href="" class="gray flr">未使用</a></p></div></div>');
+            // } 
+            pullDownAction();
+            $('#scroller-pullDown').removeClass('on'); 
+        }
+        myScroll.refresh();
+        // setNoRecord();
+    });
+    myScroll.on("slideUp",function(){
+        if(this.maxScrollY - this.y >50){
+            $('#pullUp-msg').html('正在加载');
+            // for(var i=0;i<2;i++){
+            //     $('.record-box').append('<div class="re-list"><div class="re-li-title">2016-06-20</div><div class="re-li-intro"><p class="shop-type"><span class="shop-name corwn-silver">普通店铺（1个月）</span><span class="red flr">￥50.00</span></p><p class="pay-time"><span class="small">起止时间：2016/06/20-2016/07/20</span><a href="" class="red flr">待支付</a></p></div></div>');
+            // }
+            pullUpAction();
+        }
+        myScroll.refresh();
+        // setNoRecord();
+    });
+}
+ //初始化绑定iScroll控件 
+// document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+// document.addEventListener('DOMContentLoaded', loaded, false);
+
+
+
+
+
+
+
+
+

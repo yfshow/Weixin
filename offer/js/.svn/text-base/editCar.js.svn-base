@@ -1,0 +1,145 @@
+/*tangpeinan 2016110*/
+$(function(){
+	/*数字加减*/
+	tload();
+	$('.t-goodsBtn').on("tap",'.t-minus',function(){
+		if($(this).closest('.goods-list').hasClass('.t-disabled')){
+			return false;
+		}else{
+			var num = parseInt($(this).next('.t-num').text())-1;
+			if(num>=0){
+				$(this).next().text(num);
+			}
+			total();
+		}
+	});
+	$('.t-goodsBtn').on("tap",'.t-add',function(){
+		if($(this).closest('.goods-list').hasClass('.t-disabled')){
+			return false;
+		}else{
+			var num =parseInt( $(this).prev('.t-num').text())+1;
+			$(this).prev().text(num);
+			total();
+		}
+	});
+	/*全选*/
+	$('.all-chebox').on('tap',function(){
+		if($(this).hasClass('t-fixOn')){
+			$(this).removeClass('t-fixOn');
+			$('input[type="checkbox"]').removeAttr("checked");
+			$('.shop-name').find('.t-select').removeClass('on');//商店铺按钮
+			$('.goods-select').find('a').removeClass('on');
+			$('.goods-list').removeClass('on');
+		}else{
+			$(this).addClass('t-fixOn');
+			$('input[type="checkbox"]').attr({checked:"checked"});
+			$('.shop-name').find('.t-select').addClass('on');//商店铺按钮
+			$('.goods-select').find('a').addClass('on');
+			$('.goods-list').addClass('on');
+		}
+		total();
+
+	})
+	/*店铺处全选*/
+	$('.shop-name').find('.t-select').each(function(){
+		var len = $('.shop-name').find('.t-select').length;
+		$(this).on('tap',function(){
+			//var numLengh = $('.goods-select').find('a.on').length;
+			if($(this).hasClass('on')){
+				$(this).removeClass('on').siblings('input').removeAttr("checked");
+				$('.all-chebox').removeClass('t-fixOn').siblings('input').removeAttr("checked");
+				$(this).closest('.full-ul').find('.goods-list .goods-select a').removeClass('on').siblings('input').removeAttr("checked");
+				$(this).closest('.full-ul').find('.goods-list').removeClass('on');
+			}else{
+				$(this).addClass('on').siblings('input').attr({checked:"checked"});
+				$(this).closest('.full-ul').find('.goods-list .goods-select a').addClass('on');
+				$(this).closest('.full-ul').find('.goods-list .goods-select a').addClass('on').siblings('input').attr({checked:"checked"});
+				$(this).closest('.full-ul').find('.goods-list').addClass('on');
+				var checklen1 = $('.shop-name').find('.t-select.on').length;
+				if(len==checklen1){
+					$('.all-chebox').addClass('t-fixOn').siblings('input').attr({checked:"checked"});
+				}
+			}
+			total();
+		});
+
+	});
+	/*列表单处全选*/
+	$('.goods-select').find('a').each(function(){
+		$(this).on('tap',function(){
+			if($(this).hasClass('on')){
+				$(this).removeClass('on').siblings('input').removeAttr("checked");
+				$(this).closest('.full-ul').find('.shop-name .t-select').removeClass('on').siblings('input').removeAttr("checked");
+				$('.all-chebox').removeClass('t-fixOn').siblings('input').removeAttr("checked");
+				$(this).closest('.goods-list').removeClass('on');
+			}else{
+				$(this).addClass('on').siblings('input').attr({checked:"checked"});
+				$(this).closest('.goods-list').addClass('on');
+				var len3 =$(this).closest('.full-ul').find('.goods-select a').length;
+				var checklen1 =$(this).closest('.full-ul').find('.goods-select a.on').length;
+				if(checklen1 == len3){
+					$(this).closest('.full-ul').find('.shop-name .t-select').addClass('on').siblings('input').attr({checked:"checked"});
+					var lenshopALL = $('.shop-name').find('.t-select').length;
+					var checkShop = $('.shop-name').find('.t-select.on').length;
+					if(lenshopALL==checkShop){
+						$('.all-chebox').addClass('t-fixOn').siblings('input').attr({checked:"checked"});
+					}
+				}
+			}
+			total();
+		})
+	});
+	/*计算总量*/
+	function total(){
+		var total = 0;
+		var arr=[];
+		for (var i = 0; i < $('.goods-list.on').length; i++) {
+			var List = $('.goods-list.on').eq(i);
+			if(!($('.goods-list.on').eq(i).hasClass('t-disabled'))){
+				arr.push($('.goods-list.on').eq(i));	
+			}
+		};
+		for(var j=0;j<arr.length;j++){
+			var goodsPrice = arr[j].find('.price-num').html();
+			var goodsNum = arr[j].find('.t-num').html();
+			var totalList = goodsPrice*goodsNum;
+			total += totalList;
+		}
+		$('.fixed-font3').html('￥'+total+'.00');
+
+	}
+	$('.t-delete2').on('tap',function(){
+		
+	})
+	$('.t-complete').on('tap',function(){
+		if($(this).hasClass('t-edit')){
+			$(this).removeClass('t-edit');
+			$(this).html('完成');
+			$('.t-Edit').hide();
+			$('.t-Delete').show();
+			tbind();
+		}else{
+			$(this).addClass('t-edit');
+			$(this).html('编辑');
+			$('.t-Edit').show();
+			$('.t-Delete').hide();
+			tunbind();
+		}
+		
+	});
+	function tunbind(){
+		for(var i=0;i<$('.t-disabled').length;i++){
+			$('.t-disabled').eq(i).find('.goods-select').hide();
+		}
+	}
+	function tbind(){
+		for(var i=0;i<$('.t-disabled').length;i++){
+			$('.t-disabled').eq(i).find('.goods-select').show();
+		}
+	}
+	function tload(){
+		for(var i=0;i<$('.t-disabled').length;i++){
+			$('.t-disabled').eq(i).find('.goods-select').hide();
+		}
+	}
+})

@@ -1,0 +1,117 @@
+if ($(window).width() < 350) {
+    document.documentElement.style.fontSize=document.documentElement.clientWidth/32+'px'; 
+}else if ($(window).width() > 500) {
+    document.documentElement.style.fontSize=document.documentElement.clientWidth/75+'px';
+}else{
+    document.documentElement.style.fontSize=document.documentElement.clientWidth/37.5+'px'; 
+}
+$('.choose-list').tap(function(){
+	$('.choose-list').removeClass('on');
+	$(this).addClass('on');
+})
+
+$(function(){
+		  var mySwiper2 = new Swiper('.banner',{
+			  autoplay:5000,
+			  paginationClickable: true,
+			  visibilityFullFit : true,
+			  //autoplayDisableOnInteraction : false,
+			  loop:true,
+			  pagination : '.pagination',
+		  });
+	})
+	$(function(){
+		$('.t-design').tap(function(){
+			$('.up-bg').css('top','50%');
+			$('.black-bg').css({'opacity':'0.5','pointer-events':'auto'});
+		});
+		$('.cont-btn').on('tap','.t-minus',function(){
+			var num=$(this).next('.t-cnum').text()-1;
+			if(num>=0){
+				$(this).next().text(num);
+			}
+		});
+		$('.cont-btn').on('tap','.t-add',function(){
+			var num=parseInt($(this).prev('.t-cnum').text())+1;
+			$(this).prev().text(num);
+		})
+		$('.up-bg').on('tap','.up-btn',function(){
+			$('.up-bg').css('top','100%');
+			$('.black-bg').css({'opacity':'0','pointer-events':'none'});
+			var priceNum = $('.t-cnum').text();
+			$('.design-left').children('.lf-num').text(priceNum);
+		})
+	})
+/*--上拉下拉 加载--*/
+	var pageHeight = $(window).height();
+	var height = $(".scroll1wraper").height();
+	$('.scroll2').css('top',pageHeight+'px')
+		var btn = $('.t-btn').height();
+		//var head2 = $('.t-type').height();
+		$('.scroll1').css('height',(pageHeight-btn) + 'px');
+		$('.scroll2').css('height',(pageHeight-btn) + 'px');
+		function loaded () {
+		    var myScroll1 = new IScroll('.scroll1', { click:true,probeType: 3,mouseWheel: true });
+		    var myScroll2 = new IScroll('.scroll2', { click:true,probeType: 3,mouseWheel: true });
+		    myScroll1.on("scroll",function(){
+		        var y = this.y,maxY = this.maxScrollY - y;
+		        if(y >= 50){
+		            $('#pullDown-msg1').html('松开开始刷新');
+		        }
+		        else if(y < 50 && y > 1){
+		            $('#pullDown-msg1').html('下拉刷新');
+		        }
+		        if(maxY >= 50){
+		            $('#pullUp-msg1').html('松开开始加载');
+		        }else if(maxY < 50 && maxY >=1){
+		            $('#pullUp-msg1').html('上拉加载');
+		        }
+		    });
+		    myScroll2.on("scroll",function(){
+		        var y = this.y,maxY = this.maxScrollY - y;
+		        if(y >= 50){
+		            $('#pullDown-msg2').html('松开开始刷新');
+		        }
+		        else if(y < 50 && y > 1){
+		            $('#pullDown-msg2').html('下拉刷新');
+		        }
+		        if(maxY >= 50){
+		            $('#pullUp-msg2').html('松开开始加载');
+		        }else if(maxY < 50 && maxY >=1){
+		            $('#pullUp-msg2').html('上拉加载');
+		        }
+		    });
+		    myScroll2.on("slideDown",function(){
+		        if(this.y > 50){
+		            $('#scroller-pullDown').addClass('on');
+		            $('#pullDown-msg').html('正在更新');
+		            $('#scroller-pullDown').removeClass('on'); 
+		            $('.scroll1').css('top',0+'px');
+		            $('.scroll2').css('top',pageHeight+'px');
+		        }
+		        myScroll2.refresh();
+		    });
+		    myScroll1.on("slideUp",function(){
+		        if(this.maxScrollY - this.y >50){
+		            $('#pullUp-msg').html('正在加载');
+		            $('.scroll2').css('top',0+'px');
+		            $('.scroll1').css('top',-pageHeight+'px');
+		        }
+		        myScroll1.refresh();
+		    });
+
+		}
+		/*--图文详情 选择车型TAB切换--*/
+		$(function(){
+			$('.scroll2_btn').on('tap','.tab_btn',function(){
+				var index  = $(this).index();
+				$(this).addClass('on').siblings().removeClass('on');
+				$('.scroll2_div>div').eq(index).show().siblings('div').hide();
+
+				var mySwiper1 = new Swiper('.Area-nav',{
+				    freeMode : true,
+				    slidesPerView : 'auto',
+				});
+			});
+
+		})

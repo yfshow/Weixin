@@ -1,0 +1,41 @@
+/*下拉刷新*/
+.wrapper{width: 100%; overflow: hidden;background: #eee;height: 100%;position: fixed;}
+.wrap-box{position:relative; width: 100%; -webkit-transition:-webkit-transform 0.5s ease-out 0s; z-index: 9; }
+#scroller-pullDown{height: 50px;  line-height:30px; padding: 10px 0; text-align:center; font-size: 14px; width: 100%;  position:absolute; left: 0; top: -50px;  }
+#scroller-pullDown span{padding-left: 40px;background-image: url(../images/reload.png);background-repeat: no-repeat;background-size: 30px 30px;line-height: 30px;height: 30px;display: inline-block;}
+#scroller-pullUp{height: 50px;  line-height:30px; padding: 10px 0; text-align:center; font-size: 14px; width: 100%;  position:absolute; left: 0; bottom: -50px; }
+#scroller-pullUp span{padding-left: 40px;background-image: url(../images/reload.png);background-repeat: no-repeat;background-size: 30px 30px;line-height: 30px;height: 30px;display: inline-block;}
+#noRecord{width: 100%;height: 3rem;line-height: 3rem;text-align: center;font-size: 1.4rem;color: #333;position: absolute;top: 50%;margin-top: -3rem;}
+
+/*按钮*/
+.wx-btn{height:4.4rem;line-height: 4.4rem;text-align: center;border-radius: 5px;background-color: #04be02;margin: 0 1rem;font-size: 1.6rem;color: #fff;margin-top: 1.5rem;margin-bottom: 1rem;}
+.wx-btn.disabled{background-color: #d8d8d8}
+
+
+/*列表*/
+.wx-ul{border-top: 1px solid #d8d8d8;background-color: #fff;border-bottom: 1px solid #d8d8d8;margin: 1rem 0;}
+.wx-ul li{border-bottom: 1px solid #d8d8d8;height: 5rem;margin-left: 1rem;line-height: 5rem;font-size: 1.5rem}
+.wx-ul li:last-child{border-bottom: 0px;}
+.wx-ul li.title{margin-left: 0rem;padding-left: 1rem;}
+
+
+#valCode{display: inline-block;background-color: #04be06;border-radius: 5px;color: #fff;font-size: 1.2rem;float: right;height: 4rem;margin: 0.5rem 0;line-height: 4rem;padding: 0 1rem;margin-right: 1rem;}
+#valCode.on{background-color: #d8d8d8;}
+/*标题条*/
+.wx-bar{height: 5rem;background-color: #fff;margin: 1rem 0;padding: 0 1rem;border-top: 1px solid #d8d8d8;border-bottom: 1px solid #d8d8d8;font-size: 1.5rem;line-height: 4.9rem;}
+
+/*向右箭头*/
+.arrow-r{background-image: url(../images/arrow-r.png);background-repeat: no-repeat;background-position: 97% 50%;background-size: .7rem;}
+/*.arrow-r:active{background-color: #d8d8d8;-webkit-transition:200ms}*/
+
+/*公用样式*/
+.fl{float:left;display:inline;}
+.fr{float:right;display:inline;}
+.mt0{margin-top: 0px;}
+.mt20{margin-top: 2rem;}
+.red{color:#f24e4a;}
+.green{color: #00c000}
+.gray{color: #999}
+
+
+

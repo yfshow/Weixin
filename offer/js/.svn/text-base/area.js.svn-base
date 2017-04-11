@@ -1,0 +1,141 @@
+// 销量 价格排序
+var myScroll;
+var AreaBottomHeight,windowHeight,wrapperHeight,goodsBoxTop;
+    var sortNum = 0;
+    $('.sort-bar div').tap(function(){
+        $('.sort-bar div').removeClass('on');
+        $('.sort-bar div').removeClass('sift-down');
+        $('.sort-bar div').removeClass('sift-up');
+        $(this).addClass('on');
+        if (sortNum ==1) {
+            console.log(1);
+            $('.sort-bar div').removeClass('sift-down');
+            $('.sort-bar div').removeClass('sift-up');
+            $(this).addClass('sift-up');
+            sortNum = 0;
+        }else if (sortNum ==0) {
+            console.log(0);
+            $('.sort-bar div').removeClass('sift-down');
+            $('.sort-bar div').removeClass('sift-up');
+            $(this).addClass('sift-down');
+            sortNum =1;
+        };  
+    });
+
+
+
+
+    // 分类 品牌 发货地 筛选 tab切换
+    $('.sift-bar div').tap(function(){
+        $('.sift-bar div').removeClass('on');
+        $(this).addClass('on');
+        $('.sift-bg').show();
+        $('#siftBox>div').hide();
+        $('#siftBox>div').eq($(this).index()).show();
+        setGoodsBoxH();
+    });
+
+
+    // 确定按钮
+    $('.sift-btn-set').tap(function(){
+        $('.sift-bg').hide();
+        setGoodsBoxH();
+    });
+    // 重置按钮
+    $('.sift-btn-reset').tap(function(){
+        $('.sift-bg').hide();
+        setGoodsBoxH();
+    });
+
+    // 仅看有货
+    $('.select-btn').tap(function(){
+        if ($(this).hasClass('on')) {
+            $(this).removeClass('on');
+        }else{
+            $(this).addClass('on');
+        }
+    });
+
+    // 品牌单选
+    $('#brandContent div').tap(function(){
+        $('#brandContent div').removeClass('on');
+        $(this).addClass('on');
+    });
+    // 三级类目分类
+    $('.firstList').tap(function(){
+        $('.firstList').find('.secondList').hide();
+        $(this).find('.secondList').show();
+        setGoodsBoxH();
+    });
+    $('.secondList').tap(function(){
+        $('.secondList').find('.thirdList').hide();
+        $(this).find('.thirdList').show();
+        setGoodsBoxH();
+    });
+    function setGoodsBoxH(){
+        var siftBtnBoxH = $('.sift-btn-box').height();
+        var goodsBoxMinHeight = wrapperHeight-goodsBoxTop+1;
+        var siftHeight = $('#siftBox').height()+siftBtnBoxH;
+        var maxHeight = Math.max(siftHeight, goodsBoxMinHeight);
+        $('.goods-box').css('min-height',maxHeight+"px");
+        console.log(maxHeight);
+        myScroll.refresh();
+    }
+
+function loaded () {
+    AreaBottomHeight = $('.Area-bottom').height();
+    windowHeight = $(window).height();
+    wrapperHeight = windowHeight-AreaBottomHeight;
+    goodsBoxTop = $('.goods-box').offset().top;
+    $('.wrapper').css('height',windowHeight-AreaBottomHeight+"px");
+    $('.goods-box').css('min-height',(wrapperHeight-goodsBoxTop+1)+"px");
+    myScroll = new IScroll('.wrapper', { click:true,probeType: 3,mouseWheel: true });
+    myScroll.on("scroll",function(){
+        var y = this.y,maxY = this.maxScrollY - y;
+        if(y >= 50){
+            $('#pullDown-msg').html('松开开始刷新');
+        }
+        else if(y < 50 && y > 1){
+            $('#pullDown-msg').html('下拉刷新');
+        }
+        if(maxY >= 50){
+            $('#pullUp-msg').html('松开开始加载');
+        }else if(maxY < 50 && maxY >=1){
+            $('#pullUp-msg').html('上拉加载');
+        }
+    });
+    myScroll.on("slideUp",function(){
+        if(this.maxScrollY - this.y >50){
+            $('#pullUp-msg').html('正在加载');
+            for(var i=0;i<2;i++){
+                $('.goods-box').append('<div class="goods-list"><div class="goods-left"><img src="../images/area-goods.png"></div><div class="goods-right"><p class="area-goods-title">宝妈宝马宝妈宝马宝妈宝马宝妈宝马宝妈宝马</p><p class="goods-ads">北京</p><p class="goods-price"><span class="red">￥130.00</span> <span class="gray13">销量11213123件</span><span class="addCart"></span></p></div></div>');
+            }
+        }
+        myScroll.refresh();
+    });
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
